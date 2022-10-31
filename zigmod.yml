@@ -1,0 +1,5 @@
+id: t611jswo8h591qbgnkd0x3lyaao9bebstb4dridjctnca5z8
+name: asn1
+main: asn1.zig
+license: MIT
+description: Zig parser for ASN.1 DER binary encoding
