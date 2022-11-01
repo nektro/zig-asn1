@@ -1,5 +1,7 @@
 const std = @import("std");
 const string = []const u8;
+const assert = std.debug.assert;
+const extras = @import("extras");
 
 pub const Tag = enum(u8) {
     // zig fmt: off
@@ -41,5 +43,26 @@ pub const Tag = enum(u8) {
 
     pub fn int(tag: Tag) u8 {
         return @enumToInt(tag);
+    }
+};
+
+pub const Length = packed struct(u8) {
+    len: u7,
+    form: enum { short, long },
+
+    pub fn read(reader: anytype) !u64 {
+        const octet = @bitCast(Length, try reader.readByte());
+        switch (octet.form) {
+            .short => return octet.len,
+            .long => {
+                var res: u64 = 0;
+                assert(octet.len <= 8); // long form length exceeds bounds of u64
+                assert(octet.len > 0); // TODO indefinite form
+                for (extras.range(octet.len)) |_, i| {
+                    res |= (@as(u64, try reader.readByte()) << @intCast(u6, 8 * (octet.len - 1 - @intCast(u6, i))));
+                }
+                return res;
+            },
+        }
     }
 };

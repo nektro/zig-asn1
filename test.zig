@@ -43,6 +43,7 @@ test {
 
     // Certificate Sequence
     assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    assertEql(try asn1.Length.read(r), 801);
 }
 
 fn assertEql(actual: anytype, expected: @TypeOf(actual)) void {

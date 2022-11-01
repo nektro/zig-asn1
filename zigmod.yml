@@ -3,3 +3,5 @@ name: asn1
 main: asn1.zig
 license: MIT
 description: Zig parser for ASN.1 DER binary encoding
+dependencies:
+  - src: git https://github.com/nektro/zig-extras
