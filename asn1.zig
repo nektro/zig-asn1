@@ -116,7 +116,49 @@ pub fn readInt(reader: anytype, comptime Int: type) !Int {
     return res;
 }
 
+// TODO readIntBig
+
+// TODO enumerated value
+
+// TODO real value
+
+// TODO bitstring value
+
+// TODO octetstring value
+
 pub fn readNull(reader: anytype) !void {
     try expectTag(reader, .null);
     try expectLength(reader, 0);
 }
+
+// TODO sequence value
+
+// TODO sequence-of value
+
+// TODO set value
+
+// TODO set-of value
+
+// TODO choice value
+
+// TODO value of a prefixed type
+
+// TODO value of an open type
+
+// TODO instance-of value
+
+// TODO value of the embedded-pdv type
+
+// TODO value of the external type
+
+// TODO object identifier value
+
+// TODO relative object identifier value
+
+// TODO OID internationalized resource identifier value
+
+// TODO relative OID internationalized resource identifier value
+
+// TODO values of the restricted character string types
+
+// TODO values of the unrestricted character string type
