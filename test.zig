@@ -42,107 +42,107 @@ test {
     const r = fbs.reader();
 
     // Certificate Sequence
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 801);
 
     // Certificate Info Sequence
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 521);
 
     // Version
-    assertEql(try r.readByte(), asn1.Tag.extra(.constructed, .context, 0).int());
+    try expectTag(r, asn1.Tag.extra(.constructed, .context, 0));
     assertEql(try asn1.Length.read(r), 3);
-    assertEql(try r.readByte(), asn1.Tag.integer.int());
+    try expectTag(r, .integer);
     assertEql(try asn1.Length.read(r), 1);
     assertEql(try r.readByte(), 2);
 
     // Serial Number
-    assertEql(try r.readByte(), asn1.Tag.integer.int());
+    try expectTag(r, .integer);
     assertEql(try asn1.Length.read(r), 8);
     assertEql(try r.readIntBig(u64), 0x155a92adc2048f90);
 
     // Algorithm
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 13);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     assertEql(try asn1.Length.read(r), 9);
     try expectString(r, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0b");
-    assertEql(try r.readByte(), asn1.Tag.null.int());
+    try expectTag(r, .null);
     assertEql(try asn1.Length.read(r), 0);
 
     // Issuer Sequence
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 34);
 
     // Country
-    assertEql(try r.readByte(), asn1.Tag.set.int());
+    try expectTag(r, .set);
     assertEql(try asn1.Length.read(r), 11);
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 9);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     try expectString(r, "\x03\x55\x04\x06");
-    assertEql(try r.readByte(), asn1.Tag.printable_string.int());
+    try expectTag(r, .printable_string);
     assertEql(try asn1.Length.read(r), 2);
     try expectString(r, "US");
 
     // Organizational Unit
-    assertEql(try r.readByte(), asn1.Tag.set.int());
+    try expectTag(r, .set);
     assertEql(try asn1.Length.read(r), 19);
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 17);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     try expectString(r, "\x03\x55\x04\x0a");
-    assertEql(try r.readByte(), asn1.Tag.printable_string.int());
+    try expectTag(r, .printable_string);
     assertEql(try asn1.Length.read(r), 10);
     try expectString(r, "Example CA");
 
     // Validity
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 30);
-    assertEql(try r.readByte(), asn1.Tag.utc_time.int());
+    try expectTag(r, .utc_time);
     assertEql(try asn1.Length.read(r), 13);
     try expectString(r, "181005013817Z");
-    assertEql(try r.readByte(), asn1.Tag.utc_time.int());
+    try expectTag(r, .utc_time);
     assertEql(try asn1.Length.read(r), 13);
     try expectString(r, "191005013817Z");
 
     // Subject Sequence
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 43);
 
     // Country
-    assertEql(try r.readByte(), asn1.Tag.set.int());
+    try expectTag(r, .set);
     assertEql(try asn1.Length.read(r), 11);
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 9);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     try expectString(r, "\x03\x55\x04\x06");
-    assertEql(try r.readByte(), asn1.Tag.printable_string.int());
+    try expectTag(r, .printable_string);
     assertEql(try asn1.Length.read(r), 2);
     try expectString(r, "US");
 
     // Common Name
-    assertEql(try r.readByte(), asn1.Tag.set.int());
+    try expectTag(r, .set);
     assertEql(try asn1.Length.read(r), 28);
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 26);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     try expectString(r, "\x03\x55\x04\x03");
-    assertEql(try r.readByte(), asn1.Tag.printable_string.int());
+    try expectTag(r, .printable_string);
     assertEql(try asn1.Length.read(r), 19);
     try expectString(r, "example.ulfheim.net");
 
     // Public Key
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 290);
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 13);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     assertEql(try asn1.Length.read(r), 9);
     try expectString(r, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x01");
-    assertEql(try r.readByte(), asn1.Tag.null.int());
+    try expectTag(r, .null);
     assertEql(try r.readByte(), 0);
-    assertEql(try r.readByte(), asn1.Tag.bit_string.int());
+    try expectTag(r, .bit_string);
     assertEql(try asn1.Length.read(r), 271);
     assertEql(try r.readByte(), 0);
     try expectString(r, &[_]u8{
@@ -162,69 +162,69 @@ test {
     });
 
     // Extensions
-    assertEql(try r.readByte(), asn1.Tag.extra(.constructed, .context, 3).int());
+    try expectTag(r, asn1.Tag.extra(.constructed, .context, 3));
     assertEql(try asn1.Length.read(r), 82);
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 80);
 
     // Extension - Key Usage
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 14);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     assertEql(try asn1.Length.read(r), 3);
     try expectString(r, "\x55\x1d\x0f");
-    assertEql(try r.readByte(), asn1.Tag.boolean.int());
+    try expectTag(r, .boolean);
     assertEql(try asn1.Length.read(r), 1);
     assertEql(try r.readByte(), 0xff);
-    assertEql(try r.readByte(), asn1.Tag.octet_string.int());
+    try expectTag(r, .octet_string);
     assertEql(try asn1.Length.read(r), 4);
-    assertEql(try r.readByte(), asn1.Tag.bit_string.int());
+    try expectTag(r, .bit_string);
     assertEql(try asn1.Length.read(r), 2);
     assertEql(try r.readByte(), 5);
     assertEql(try r.readByte(), 0xa0);
 
     // Extension - Extended Key Usage
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 29);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     assertEql(try asn1.Length.read(r), 3);
     try expectString(r, "\x55\x1d\x25");
-    assertEql(try r.readByte(), asn1.Tag.octet_string.int());
+    try expectTag(r, .octet_string);
     assertEql(try asn1.Length.read(r), 22);
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 20);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     assertEql(try asn1.Length.read(r), 8);
     try expectString(r, "\x2b\x06\x01\x05\x05\x07\x03\x02");
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     assertEql(try asn1.Length.read(r), 8);
     try expectString(r, "\x2b\x06\x01\x05\x05\x07\x03\x01");
 
     // Extension - Authority Key Identifier
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 31);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     assertEql(try asn1.Length.read(r), 3);
     try expectString(r, "\x55\x1d\x23");
-    assertEql(try r.readByte(), asn1.Tag.octet_string.int());
+    try expectTag(r, .octet_string);
     assertEql(try asn1.Length.read(r), 24);
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 22);
-    assertEql(try r.readByte(), asn1.Tag.extra(.primitive, .context, 0).int());
+    try expectTag(r, asn1.Tag.extra(.primitive, .context, 0));
     assertEql(try asn1.Length.read(r), 20);
     try expectString(r, &[_]u8{ 0x89, 0x4f, 0xde, 0x5b, 0xcc, 0x69, 0xe2, 0x52, 0xcf, 0x3e, 0xa3, 0x00, 0xdf, 0xb1, 0x97, 0xb8, 0x1d, 0xe1, 0xc1, 0x46 });
 
     // Signature Algorithm
-    assertEql(try r.readByte(), asn1.Tag.sequence.int());
+    try expectTag(r, .sequence);
     assertEql(try asn1.Length.read(r), 13);
-    assertEql(try r.readByte(), asn1.Tag.object_identifier.int());
+    try expectTag(r, .object_identifier);
     assertEql(try asn1.Length.read(r), 9);
     try expectString(r, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0b");
-    assertEql(try r.readByte(), asn1.Tag.null.int());
+    try expectTag(r, .null);
     assertEql(try r.readByte(), 0);
 
     // Signature
-    assertEql(try r.readByte(), asn1.Tag.bit_string.int());
+    try expectTag(r, .bit_string);
     assertEql(try asn1.Length.read(r), 257);
     assertEql(try r.readByte(), 0);
     try expectString(r, &[_]u8{
@@ -259,4 +259,8 @@ fn expectString(reader: anytype, expected: []const u8) !void {
     for (expected) |item| {
         assertEql(try reader.readByte(), item);
     }
+}
+
+fn expectTag(reader: anytype, tag: asn1.Tag) !void {
+    try std.testing.expectEqual(tag.int(), try reader.readByte());
 }
