@@ -58,8 +58,7 @@ test {
 
     // Algorithm
     try expectTag(r, .sequence, 13);
-    try expectTag(r, .object_identifier, 9);
-    try expectString(r, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0b");
+    try expectTagStr(r, .object_identifier, 9, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0b");
     try expectTag(r, .null, 0);
 
     // Issuer Sequence
@@ -68,25 +67,19 @@ test {
     // Country
     try expectTag(r, .set, 11);
     try expectTag(r, .sequence, 9);
-    try expectTag(r, .object_identifier, 3);
-    try expectString(r, "\x55\x04\x06");
-    try expectTag(r, .printable_string, 2);
-    try expectString(r, "US");
+    try expectTagStr(r, .object_identifier, 3, "\x55\x04\x06");
+    try expectTagStr(r, .printable_string, 2, "US");
 
     // Organizational Unit
     try expectTag(r, .set, 19);
     try expectTag(r, .sequence, 17);
-    try expectTag(r, .object_identifier, 3);
-    try expectString(r, "\x55\x04\x0a");
-    try expectTag(r, .printable_string, 10);
-    try expectString(r, "Example CA");
+    try expectTagStr(r, .object_identifier, 3, "\x55\x04\x0a");
+    try expectTagStr(r, .printable_string, 10, "Example CA");
 
     // Validity
     try expectTag(r, .sequence, 30);
-    try expectTag(r, .utc_time, 13);
-    try expectString(r, "181005013817Z");
-    try expectTag(r, .utc_time, 13);
-    try expectString(r, "191005013817Z");
+    try expectTagStr(r, .utc_time, 13, "181005013817Z");
+    try expectTagStr(r, .utc_time, 13, "191005013817Z");
 
     // Subject Sequence
     try expectTag(r, .sequence, 43);
@@ -94,28 +87,23 @@ test {
     // Country
     try expectTag(r, .set, 11);
     try expectTag(r, .sequence, 9);
-    try expectTag(r, .object_identifier, 3);
-    try expectString(r, "\x55\x04\x06");
-    try expectTag(r, .printable_string, 2);
-    try expectString(r, "US");
+    try expectTagStr(r, .object_identifier, 3, "\x55\x04\x06");
+    try expectTagStr(r, .printable_string, 2, "US");
 
     // Common Name
     try expectTag(r, .set, 28);
     try expectTag(r, .sequence, 26);
-    try expectTag(r, .object_identifier, 3);
-    try expectString(r, "\x55\x04\x03");
-    try expectTag(r, .printable_string, 19);
-    try expectString(r, "example.ulfheim.net");
+    try expectTagStr(r, .object_identifier, 3, "\x55\x04\x03");
+    try expectTagStr(r, .printable_string, 19, "example.ulfheim.net");
 
     // Public Key
     try expectTag(r, .sequence, 290);
     try expectTag(r, .sequence, 13);
-    try expectTag(r, .object_identifier, 9);
-    try expectString(r, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x01");
+    try expectTagStr(r, .object_identifier, 9, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x01");
     try expectTag(r, .null, 0);
     try expectTag(r, .bit_string, 271);
     assertEql(try r.readByte(), 0);
-    try expectString(r, &[_]u8{
+    try expectBytes(r, &[_]u8{
         0x30, 0x82, 0x01, 0x0a, 0x02, 0x82, 0x01, 0x01, 0x00, 0xc4, 0x80, 0x36, 0x06, 0xba, 0xe7, 0x47, 0x6b, 0x08, 0x94, 0x04, 0xec,
         0xa7, 0xb6, 0x91, 0x04, 0x3f, 0xf7, 0x92, 0xbc, 0x19, 0xee, 0xfb, 0x7d, 0x74, 0xd7, 0xa8, 0x0d, 0x00, 0x1e, 0x7b, 0x4b, 0x3a,
         0x4a, 0xe6, 0x0f, 0xe8, 0xc0, 0x71, 0xfc, 0x73, 0xe7, 0x02, 0x4c, 0x0d, 0xbc, 0xf4, 0xbd, 0xd1, 0x1d, 0x39, 0x6b, 0xba, 0x70,
@@ -137,8 +125,7 @@ test {
 
     // Extension - Key Usage
     try expectTag(r, .sequence, 14);
-    try expectTag(r, .object_identifier, 3);
-    try expectString(r, "\x55\x1d\x0f");
+    try expectTagStr(r, .object_identifier, 3, "\x55\x1d\x0f");
     try expectTag(r, .boolean, 1);
     assertEql(try r.readByte(), 0xff);
     try expectTag(r, .octet_string, 4);
@@ -148,34 +135,28 @@ test {
 
     // Extension - Extended Key Usage
     try expectTag(r, .sequence, 29);
-    try expectTag(r, .object_identifier, 3);
-    try expectString(r, "\x55\x1d\x25");
+    try expectTagStr(r, .object_identifier, 3, "\x55\x1d\x25");
     try expectTag(r, .octet_string, 22);
     try expectTag(r, .sequence, 20);
-    try expectTag(r, .object_identifier, 8);
-    try expectString(r, "\x2b\x06\x01\x05\x05\x07\x03\x02");
-    try expectTag(r, .object_identifier, 8);
-    try expectString(r, "\x2b\x06\x01\x05\x05\x07\x03\x01");
+    try expectTagStr(r, .object_identifier, 8, "\x2b\x06\x01\x05\x05\x07\x03\x02");
+    try expectTagStr(r, .object_identifier, 8, "\x2b\x06\x01\x05\x05\x07\x03\x01");
 
     // Extension - Authority Key Identifier
     try expectTag(r, .sequence, 31);
-    try expectTag(r, .object_identifier, 3);
-    try expectString(r, "\x55\x1d\x23");
+    try expectTagStr(r, .object_identifier, 3, "\x55\x1d\x23");
     try expectTag(r, .octet_string, 24);
     try expectTag(r, .sequence, 22);
-    try expectTag(r, asn1.Tag.extra(.primitive, .context, 0), 20);
-    try expectString(r, &[_]u8{ 0x89, 0x4f, 0xde, 0x5b, 0xcc, 0x69, 0xe2, 0x52, 0xcf, 0x3e, 0xa3, 0x00, 0xdf, 0xb1, 0x97, 0xb8, 0x1d, 0xe1, 0xc1, 0x46 });
+    try expectTagStr(r, asn1.Tag.extra(.primitive, .context, 0), 20, &[_]u8{ 0x89, 0x4f, 0xde, 0x5b, 0xcc, 0x69, 0xe2, 0x52, 0xcf, 0x3e, 0xa3, 0x00, 0xdf, 0xb1, 0x97, 0xb8, 0x1d, 0xe1, 0xc1, 0x46 });
 
     // Signature Algorithm
     try expectTag(r, .sequence, 13);
-    try expectTag(r, .object_identifier, 9);
-    try expectString(r, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0b");
+    try expectTagStr(r, .object_identifier, 9, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0b");
     try expectTag(r, .null, 0);
 
     // Signature
     try expectTag(r, .bit_string, 257);
     assertEql(try r.readByte(), 0);
-    try expectString(r, &[_]u8{
+    try expectBytes(r, &[_]u8{
         0x59, 0x16, 0x45, 0xa6, 0x9a, 0x2e, 0x37, 0x79, 0xe4, 0xf6, 0xdd, 0x27, 0x1a, 0xba, 0x1c, 0x0b,
         0xfd, 0x6c, 0xd7, 0x55, 0x99, 0xb5, 0xe7, 0xc3, 0x6e, 0x53, 0x3e, 0xff, 0x36, 0x59, 0x08, 0x43,
         0x24, 0xc9, 0xe7, 0xa5, 0x04, 0x07, 0x9d, 0x39, 0xe0, 0xd4, 0x29, 0x87, 0xff, 0xe3, 0xeb, 0xdd,
@@ -203,13 +184,19 @@ fn assertEql(actual: anytype, expected: @TypeOf(actual)) void {
     assert(actual == expected);
 }
 
-fn expectString(reader: anytype, expected: []const u8) !void {
+fn expectBytes(reader: anytype, expected: []const u8) !void {
     for (expected) |item| {
-        assertEql(try reader.readByte(), item);
+        try std.testing.expectEqual(item, try reader.readByte());
     }
 }
 
 fn expectTag(reader: anytype, tag: asn1.Tag, len: u64) !void {
     try std.testing.expectEqual(tag.int(), try reader.readByte());
     try std.testing.expectEqual(len, try asn1.Length.read(reader));
+}
+
+fn expectTagStr(reader: anytype, tag: asn1.Tag, len: u64, str: []const u8) !void {
+    try expectTag(reader, tag, len);
+    try std.testing.expectEqual(len, str.len);
+    try expectBytes(reader, str);
 }
