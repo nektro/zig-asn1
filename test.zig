@@ -49,12 +49,10 @@ test {
 
     // Version
     try expectTag(r, asn1.Tag.extra(.constructed, .context, 0), 3);
-    try expectTag(r, .integer, 1);
-    assertEql(try r.readByte(), 2);
+    try expectEqual(try asn1.readInt(r, u8), 2);
 
     // Serial Number
-    try expectTag(r, .integer, 8);
-    assertEql(try r.readIntBig(u64), 0x155a92adc2048f90);
+    try expectEqual(try asn1.readInt(r, u64), 0x155a92adc2048f90);
 
     // Algorithm
     try expectTag(r, .sequence, 13);
@@ -200,6 +198,6 @@ fn expectTagStr(reader: anytype, tag: asn1.Tag, len: u64, str: []const u8) !void
     try expectBytes(reader, str);
 }
 
-fn expectEqual(actual: anytype, expected: anytype) !void {
+fn expectEqual(actual: anytype, expected: @TypeOf(actual)) !void {
     try std.testing.expectEqual(expected, actual);
 }

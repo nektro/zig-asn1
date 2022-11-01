@@ -100,3 +100,18 @@ pub fn readBoolean(reader: anytype) !bool {
     try expectLength(reader, 1);
     return (try reader.readByte()) > 0;
 }
+
+pub fn readInt(reader: anytype, comptime Int: type) !Int {
+    comptime assert(@bitSizeOf(Int) % 8 == 0);
+    const L2Int = std.math.Log2Int(Int);
+    try expectTag(reader, .integer);
+    const len = try Length.read(reader);
+    assert(len <= 8); // TODO implement readIntBig
+    assert(len > 0);
+    assert(len <= @sizeOf(Int));
+    var res: Int = 0;
+    for (extras.range(len)) |_, i| {
+        res |= (@as(Int, try reader.readByte()) << @intCast(L2Int, 8 * (len - 1 - @intCast(L2Int, i))));
+    }
+    return res;
+}
