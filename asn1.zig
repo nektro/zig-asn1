@@ -5,7 +5,7 @@ const extras = @import("extras");
 
 pub const Tag = enum(u8) {
     // zig fmt: off
-    _reserved           = @as(u8, 0) | @enumToInt(PC.primitive),
+    end_of_content      = @as(u8, 0) | @enumToInt(PC.primitive),
     boolean             = @as(u8, 1) | @enumToInt(PC.primitive),
     integer             = @as(u8, 2) | @enumToInt(PC.primitive),
     bit_string          = @as(u8, 3) | @enumToInt(PC.primitive),
