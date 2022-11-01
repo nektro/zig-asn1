@@ -62,6 +62,10 @@ pub const Tag = enum(u8) {
         res |= @enumToInt(class);
         return @intToEnum(Tag, res);
     }
+
+    pub fn read(reader: anytype) !Tag {
+        return @intToEnum(Tag, try reader.readByte());
+    }
 };
 
 pub const Length = packed struct(u8) {
@@ -86,7 +90,7 @@ pub const Length = packed struct(u8) {
 };
 
 fn expectTag(reader: anytype, tag: Tag) !void {
-    const actual = @intToEnum(Tag, try reader.readByte());
+    const actual = try Tag.read(reader);
     if (actual != tag) return error.UnexpectedTag;
 }
 
