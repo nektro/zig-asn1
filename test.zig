@@ -126,8 +126,7 @@ test {
     // Extension - Key Usage
     try expectTag(r, .sequence, 14);
     try expectTagStr(r, .object_identifier, 3, "\x55\x1d\x0f");
-    try expectTag(r, .boolean, 1);
-    assertEql(try r.readByte(), 0xff);
+    try expectEqual(try asn1.readBoolean(r), true);
     try expectTag(r, .octet_string, 4);
     try expectTag(r, .bit_string, 2);
     assertEql(try r.readByte(), 5);
@@ -199,4 +198,8 @@ fn expectTagStr(reader: anytype, tag: asn1.Tag, len: u64, str: []const u8) !void
     try expectTag(reader, tag, len);
     try std.testing.expectEqual(len, str.len);
     try expectBytes(reader, str);
+}
+
+fn expectEqual(actual: anytype, expected: anytype) !void {
+    try std.testing.expectEqual(expected, actual);
 }

@@ -84,3 +84,19 @@ pub const Length = packed struct(u8) {
         }
     }
 };
+
+fn expectTag(reader: anytype, tag: Tag) !void {
+    const actual = @intToEnum(Tag, try reader.readByte());
+    if (actual != tag) return error.UnexpectedTag;
+}
+
+fn expectLength(reader: anytype, len: u64) !void {
+    const actual = try Length.read(reader);
+    if (actual != len) return error.UnexpectedLength;
+}
+
+pub fn readBoolean(reader: anytype) !bool {
+    try expectTag(reader, .boolean);
+    try expectLength(reader, 1);
+    return (try reader.readByte()) > 0;
+}
