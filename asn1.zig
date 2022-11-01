@@ -115,3 +115,8 @@ pub fn readInt(reader: anytype, comptime Int: type) !Int {
     }
     return res;
 }
+
+pub fn readNull(reader: anytype) !void {
+    try expectTag(reader, .null);
+    try expectLength(reader, 0);
+}

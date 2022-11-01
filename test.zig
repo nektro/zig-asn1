@@ -57,7 +57,7 @@ test {
     // Algorithm
     try expectTag(r, .sequence, 13);
     try expectTagStr(r, .object_identifier, 9, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0b");
-    try expectTag(r, .null, 0);
+    try asn1.readNull(r);
 
     // Issuer Sequence
     try expectTag(r, .sequence, 34);
@@ -98,7 +98,7 @@ test {
     try expectTag(r, .sequence, 290);
     try expectTag(r, .sequence, 13);
     try expectTagStr(r, .object_identifier, 9, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x01");
-    try expectTag(r, .null, 0);
+    try asn1.readNull(r);
     try expectTag(r, .bit_string, 271);
     assertEql(try r.readByte(), 0);
     try expectBytes(r, &[_]u8{
@@ -148,7 +148,7 @@ test {
     // Signature Algorithm
     try expectTag(r, .sequence, 13);
     try expectTagStr(r, .object_identifier, 9, "\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0b");
-    try expectTag(r, .null, 0);
+    try asn1.readNull(r);
 
     // Signature
     try expectTag(r, .bit_string, 257);
