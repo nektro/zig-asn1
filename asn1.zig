@@ -39,10 +39,28 @@ pub const Tag = enum(u8) {
     date                = @as(u8,31) | @enumToInt(PC.primitive),
     _,
 
+    const PC = enum(u8) {
+        primitive   = 0b00000000,
+        constructed = 0b00100000,
+    };
+
+    const Class = enum(u8) {
+        universal   = 0b00000000,
+        application = 0b01000000,
+        context     = 0b10000000,
+        private     = 0b11000000,
+    };
     // zig fmt: on
 
     pub fn int(tag: Tag) u8 {
         return @enumToInt(tag);
+    }
+
+    pub fn extra(pc: PC, class: Class, ty: u5) Tag {
+        var res: u8 = ty;
+        res |= @enumToInt(pc);
+        res |= @enumToInt(class);
+        return @intToEnum(Tag, res);
     }
 };
 
