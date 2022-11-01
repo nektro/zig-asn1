@@ -42,7 +42,7 @@ test {
     const r = fbs.reader();
 
     // Certificate Sequence
-    assertEql(try r.readByte(), asn1.Tag.init(.constructed, .universal, .sequence).int());
+    assertEql(try r.readByte(), asn1.Tag.sequence.int());
 }
 
 fn assertEql(actual: anytype, expected: @TypeOf(actual)) void {
